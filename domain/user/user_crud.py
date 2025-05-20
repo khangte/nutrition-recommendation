@@ -33,4 +33,3 @@ def delete_user(db: Session, username: str):
     if user:
         db.delete(user)
         db.commit()
-

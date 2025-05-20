@@ -157,15 +157,17 @@ myapi/
 > 🔍 `이더넷 어댑터`, `Wi-Fi`, 또는 `vEthernet (Default Switch)` 중  
 > **IPv4 주소** 항목에서 `192.168.x.x` 또는 `10.x.x.x` 와 같은 IP를 찾습니다.
 > ```
+> 예시: 
 > 이더넷 어댑터 이더넷 2:
 >    IPv4 주소 . . . . . . . . . : 192.0.0.0
 > ```
 >
 > ---
 >
-> ✅ **5. Ubuntu (WSL or VirtualBox)에서 MySQL 접속 테스트**
+> ✅ **5. Ubuntu (WSL or VirtualBox)에서 MySQL 접속**
 >
 > ```bash
+> 예시: 
 > mysql -h 192.168.0.101 -P 3306 -u root -p
 > ```
 > 비밀번호: 1234
@@ -178,6 +180,7 @@ myapi/
 > ✅ **6. FastAPI의 `SQLALCHEMY_DATABASE_URL` 설정**
 >
 > ```python
+> 예시:
 > SQLALCHEMY_DATABASE_URL = "mysql+pymysql://root:1234@192.168.0.101:3306/testdb"
 > ```
 > 📌 `localhost`로 접속이 되지 않을 경우 반드시 위처럼 **Windows의 실제 IP 주소를 지정**해야 합니다.
@@ -187,18 +190,11 @@ myapi/
 > ✅ **7. FastAPI DB URL 예시 (`database.py`)**
 >
 > ```python
+> 예시:
 > SQLALCHEMY_DATABASE_URL = "mysql+pymysql://root:1234@192.168.0.101:3306/testdb"
 > ```
 >
 > ---
->
-> ✅ **8. 컨테이너 & 데이터 정리 (선택)**
->
-> ```bash
-> docker stop my-mysql
-> docker rm my-mysql
-> docker volume rm mysql-volume
-> ```
 
 ---
 
@@ -224,6 +220,7 @@ myapi/
 > ```
 
 ---
+
 > ## 기능 구현 절차
 > 1. 스키마 생성
 > 2. CRUD 함수 작성

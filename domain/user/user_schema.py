@@ -30,7 +30,7 @@ class UserCreate(BaseModel):
     @field_validator('password2')
     def passwords_match(cls, v, info: FieldValidationInfo):
         if 'password1' in info.data and v != info.data['password1']:
-            raise ValueError('비밀번호가 일치하지 않습니다')
+            raise ValueError('비밀번호가 일치하지 않습니다.')
         return v
 
 class PasswordVerify(BaseModel):
