@@ -4,9 +4,13 @@
 from sqlalchemy import create_engine, MetaData
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 # 데이터베이스 접속 주소
-SQLALCHEMY_DATABASE_URL = "mysql+pymysql://root:1234@192.168.56.1:3306/testdb"
+SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL")
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL
