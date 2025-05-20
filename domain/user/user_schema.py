@@ -1,11 +1,13 @@
 from pydantic import BaseModel, field_validator, EmailStr
 from pydantic_core.core_schema import FieldValidationInfo
+from datetime import datetime
 
 class UserCreate(BaseModel):
     username: str
     password1: str
     password2: str
     email: EmailStr
+    created_at: datetime
 
     @field_validator('username', 'password1', 'password2', 'email')
     def not_empty(cls, v):

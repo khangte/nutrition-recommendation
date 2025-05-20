@@ -5,6 +5,10 @@
 
 from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
+from datetime import datetime
+import pytz
+
+seoul_tz = pytz.timezone("Asia/Seoul")
 
 from database import Base
 
@@ -15,4 +19,4 @@ class User(Base):
     username = Column(String(30), unique=True, nullable=False)
     password = Column(String(100), nullable=False)
     email = Column(String(30), unique=True, nullable=False)
-
+    created_at = Column(DateTime, default=lambda: datetime.now(seoul_tz))

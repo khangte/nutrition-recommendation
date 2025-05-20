@@ -62,6 +62,7 @@ myapi/
 │   ├── versions/
 │   └── env.py
 ├── .env
+├── alembic.ini
 ├── database.py
 ├── main.py
 ├── models.py
@@ -185,16 +186,6 @@ myapi/
 > ```
 > 📌 `localhost`로 접속이 되지 않을 경우 반드시 위처럼 **Windows의 실제 IP 주소를 지정**해야 합니다.
 >
-> ---
->
-> ✅ **7. FastAPI DB URL 예시 (`database.py`)**
->
-> ```python
-> 예시:
-> SQLALCHEMY_DATABASE_URL = "mysql+pymysql://root:1234@192.168.0.101:3306/testdb"
-> ```
->
-> ---
 
 ---
 
