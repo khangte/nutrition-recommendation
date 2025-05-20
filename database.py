@@ -4,12 +4,14 @@
 from sqlalchemy import create_engine, MetaData
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+
 from dotenv import load_dotenv
 import os
 
 load_dotenv()
 
 # 데이터베이스 접속 주소
+# .env 파일 에서 관리
 SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL")
 
 engine = create_engine(

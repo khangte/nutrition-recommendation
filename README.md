@@ -2,19 +2,30 @@
 [[위키독스 **점프 투 FastAPI**]](https://www.google.com/search?q=%EC%A0%90%ED%94%84%ED%88%AC+fastapi&rlz=1C1GCEU_koKR1161KR1161&oq=%EC%A0%90%ED%94%84%ED%88%AC&gs_lcrp=EgZjaHJvbWUqBggBEEUYOzIGCAAQRRg5MgYIARBFGDsyBggCEEUYOzIGCAMQRRg7MgYIBBBFGDvSAQkzMDA1ajBqMTWoAgiwAgE&sourceid=chrome&ie=UTF-8)
 
 > ## 개발환경 구성 
-> - 개발환경 : VirtualBox + Ubuntu 22.04 Server
->   - 메모리 : 8GB
->   - 프로세서 : 4개 이상(pycharm, vscode 사용 때문)
->   - 비디오메모리 : 16MB
->   - 모니터개수 : 1개
->   - 저장소 메모리 : 16~25GB
->   - 네트워크 : NAT 네트워크 포트포워딩
-> - 백엔드 : FastAPI (uvicorn 실행)
-> - 백엔드 프레임워크 : Pycharm 
-> - 프론트엔드 : Svelte (Bootstrap 5.3.6 UI 기반)
-> - 프론트엔드 프레임워크 : VS Code 
-> - 데이터베이스 : MySQL - Docker Volume
-> - 배포용 GitHub Repository : khangte/fastapi-login-test
+> ### 시스템 환경
+> - 가상화 플랫폼: VirtualBox + Ubuntu 22.04 Server
+> - 메모리: 8GB
+> - 프로세서: 4개 이상(pycharm, vscode 사용 때문)
+> - 비디오메모리: 16MB
+> - 모니터개수: 1개
+> - 저장소 메모리: 16~25GB
+> - 네트워크: NAT + 포트포워딩
+> ### 백엔드
+> - 프레임워크: FastAPI
+> - 서버 실행: Uvicorn
+> - 개발 환경: PyCharm
+> ### 프론트엔드
+> - 프레임워크: Svelte
+> - UI 라이브러리: Bootstrap 5.3.6
+> - 개발환경: Visual Studio Code
+> ### 데이터베이스 
+> - RDBMS: MySQL 
+> - 구동 방식: Docker Container
+> - 데이터 유지: Docker Volume
+> ### 배포용 GitHub Repository
+> - [GitHub/khangte](https://github.com/khangte/fastapi-login-test)
+
+---
 
 ## 파일 구조
 ```
@@ -50,6 +61,7 @@ myapi/
 ├── migrations/
 │   ├── versions/
 │   └── env.py
+├── .env
 ├── database.py
 ├── main.py
 ├── models.py
@@ -58,6 +70,7 @@ myapi/
 ```
 
 ---
+
 > ## uv 가상환경
 > - 가상환경 생성
 > ```
@@ -88,51 +101,103 @@ myapi/
 > ## 실행코드
 > - 백엔드 실행코드
 > ```bash
-> $ uvicorn main:app --host 0.0.0.0 --port 8000
+> uvicorn main:app --host 0.0.0.0 --port 8000
 > ```
 > - 프론트엔드 실행코드
 > ```bash
-> $ npm run dev
+> npm run dev
 > ```
 
 ---
 
-> ## MySQL 서버 사용 방법
-> 1.mysql 설치
-> ```bash
-> $ sudo apt update
-> $ sudo apt install mysql-server
-> ```
+> ## MySQL 서버 구성
+> - Docker + Volume
+> - Windows Docker Desktop 환경
 > 
-> 2. mysql 서버 실행 상태 확인
+> ✅ **1. Docker Volume 생성** (Windows PowerShell에서 실행 가능)
 > ```bash
-> $ sudo service mysql status
-> ```
-> 
-> 3. MySQL 로그인
-> ```bash
-> $ mysql -u root -p
-> ```
-> ---
-> ※ 에러 메시지
-> ```bash
-> ERROR 1698 (28000): Access denied for user 'root'@'localhost'
-> => root 유저가 패스워드 인증이 아닌 
-> "auth_socket" 방식으로만 로그인이 가능하도록 설정되어 있기 때문!
-> > ```
-> - 해결방법
-> ```bash
-> $ sudo mysql
-> > ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '1234';
-> > FLUSH PRIVILEGES;
+> docker volume create mysql-volume
 > ```
 >
-> - MySQL은 서버 기반 DB이기 때문에, DB가 서버 내에 직접 있어야함.
-> - 즉, 미리 CREATE DATABASE를 해서 DB를 생성해야됨.
-> ```sql
-> CREATE DATABASE login_test 
-> CHARACTER SET utf8mb4 
-> COLLATE utf8mb4_unicode_ci;
+> ---
+>
+> ✅ **2. MySQL 컨테이너 실행** (Windows Docker Desktop 기준)
+>
+> ```bash
+> docker run -d ^
+>   --name my-mysql ^
+>   -e MYSQL_ROOT_PASSWORD=1234 ^
+>   -e MYSQL_DATABASE=testdb ^
+>   -p 3306:3306 ^
+>   -v mysql-volume:/var/lib/mysql ^
+>   --restart unless-stopped ^
+>   mysql:8.0
+> ```
+>
+> 🔸 `--restart unless-stopped`: Windows 재시작 후 Docker Desktop이 다시 실행되면 컨테이너도 자동 실행됨  
+> 🔸 `-v mysql-volume:/var/lib/mysql`: MySQL 데이터를 Docker Volume에 저장하여 컨테이너를 재생성해도 데이터 보존  
+> 🔸 `MYSQL_DATABASE=testdb`: 초기 데이터베이스 자동 생성
+>
+> ---
+>
+> ✅ **3. MySQL 컨테이너 상태 확인**
+>
+> ```bash
+> docker ps
+> ```
+>
+> ---
+> 
+> ✅ **4. PowerShell에서 현재 IP 확인 (ifconfig는 Linux 명령어입니다)**
+>
+> ```powershell
+> ipconfig
+> ```
+>
+> 🔍 `이더넷 어댑터`, `Wi-Fi`, 또는 `vEthernet (Default Switch)` 중  
+> **IPv4 주소** 항목에서 `192.168.x.x` 또는 `10.x.x.x` 와 같은 IP를 찾습니다.
+> ```
+> 이더넷 어댑터 이더넷 2:
+>    IPv4 주소 . . . . . . . . . : 192.0.0.0
+> ```
+>
+> ---
+>
+> ✅ **5. Ubuntu (WSL or VirtualBox)에서 MySQL 접속 테스트**
+>
+> ```bash
+> mysql -h 192.168.0.101 -P 3306 -u root -p
+> ```
+> 비밀번호: 1234
+> 
+> 📌 Ubuntu에서 `localhost → Docker(MySQL)`에 접근하려면 Docker가 `3306` 포트를 로컬에 노출하고 있어야 합니다.  
+> 위 `-p 3306:3306` 설정으로 자동 처리됩니다.
+>
+> ---
+> 
+> ✅ **6. FastAPI의 `SQLALCHEMY_DATABASE_URL` 설정**
+>
+> ```python
+> SQLALCHEMY_DATABASE_URL = "mysql+pymysql://root:1234@192.168.0.101:3306/testdb"
+> ```
+> 📌 `localhost`로 접속이 되지 않을 경우 반드시 위처럼 **Windows의 실제 IP 주소를 지정**해야 합니다.
+>
+> ---
+>
+> ✅ **7. FastAPI DB URL 예시 (`database.py`)**
+>
+> ```python
+> SQLALCHEMY_DATABASE_URL = "mysql+pymysql://root:1234@192.168.0.101:3306/testdb"
+> ```
+>
+> ---
+>
+> ✅ **8. 컨테이너 & 데이터 정리 (선택)**
+>
+> ```bash
+> docker stop my-mysql
+> docker rm my-mysql
+> docker volume rm mysql-volume
 > ```
 
 ---
@@ -143,12 +208,12 @@ myapi/
 > alembic init migrations
 > ```
 > 2. 설정 파일 수정
->    - ```alembic.ini```수정
->    - ```migrations/env.py```수정
->      ```python
->      from models
->      target_metadata = models.Base.metadata
->      ```
+> - ```alembic.ini```수정
+> - ```migrations/env.py```수정
+> ```python
+>  from models
+>  target_metadata = models.Base.metadata
+> ```
 > 3. 변경사항 감지하고 마이그레이션 파일 생성
 > ```bash
 > alembic revision --autogenerate
