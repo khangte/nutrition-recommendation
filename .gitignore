@@ -68,4 +68,6 @@ poetry.lock
 Pipfile.lock
 
 git-push-all.sh
+git-remove-ignore.sh
+
 alembic.ini
