@@ -66,3 +66,5 @@ alembic.ini
 .pdm-build/
 poetry.lock
 Pipfile.lock
+
+git-push-all.sh
