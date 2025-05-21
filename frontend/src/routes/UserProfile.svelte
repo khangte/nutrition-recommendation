@@ -70,6 +70,9 @@
             readonly
             />
         </div>
+        <div class="col-sm-4">
+            <a use:link href="/update-password" class="btn btn-outline-primary btn-sm">비밀번호 변경</a>
+        </div>
     </div>
 
     <!-- 이메일 -->
@@ -86,19 +89,16 @@
         </div>
     </div>
 
-    <!-- 통신사 -->
-    <div class="row mb-2">
-        <label for="telecom" class="col-sm-2 col-form-label">통신사</label>
-        <div class="col-sm-4">
-            <input type="text" class="form-control" value={telecom} readonly />
-        </div>
-    </div>
-
-    <!-- 전화번호 -->
+    <!-- 전화번호 + 통신사 함께 표시 -->
     <div class="row mb-2">
         <label for="phone_number" class="col-sm-2 col-form-label">전화번호</label>
         <div class="col-sm-4">
-            <input type="text" class="form-control" value={phone_number} readonly />
+            <input
+            type="text"
+            class="form-control"
+            value={`${telecom} ${phone_number}`}
+            readonly
+            />
         </div>
     </div>
 
@@ -151,15 +151,11 @@
     <hr class="my-4" />
 
     <div class="d-flex justify-content-between">
-        <!-- 내 정보 수정 버튼: 왼쪽 -->
-        <a use:link href="/user-update" class="btn btn-primary">
-            내 정보 수정
-        </a>
-
-        <!-- 회원 탈퇴 버튼: 오른쪽 -->
+        <!-- 내정보 수정 버튼 -->
+        <a use:link href="/user-update" class="btn btn-outline-primary btn-sm">
+            내 정보 수정</a>
+        <!-- 회원 탈퇴 버튼 -->
         <a use:link href="/user-delete" class="btn btn-outline-danger">
-            회원 탈퇴
-        </a>
+            회원 탈퇴</a>
     </div>
-
 </div>

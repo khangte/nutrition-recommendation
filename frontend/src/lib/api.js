@@ -47,37 +47,49 @@ const fastapi = (operation, url, params, success_callback, failure_callback) => 
     }
 
     fetch(_url, options)
-        .then(response => {
-            if(response.status === 204) { // No content
-                if(success_callback) {
-                    success_callback()
-                }
-                return
+    .then(response => {
+        if (response.status === 204) { // No content
+            if (success_callback) {
+                success_callback();
             }
-            response.json()
-                .then(json => {
-                    if(response.status >= 200 && response.status < 300) {  // 200 ~ 299
-                        if(success_callback) {
-                            success_callback(json)
-                        }
-                    }else if(operation !== 'login' && response.status === 401) { // token time out
-                        access_token.set('')
-                        username.set('')
-                        is_login.set(false)
-                        alert("로그인이 필요합니다.")
-                        push('/user-login')
-                    }else {
+            return;
+        }
+        response.json()
+            .then(json => {
+                if (response.status >= 200 && response.status < 300) {
+                    if (success_callback) {
+                        success_callback(json);
+                    }
+                } else if (response.status === 401) {
+                    // ✅ 예외 처리할 operation 목록
+                    const skipLogoutOps = ['login', 'verify-password'];
+
+                    if (!skipLogoutOps.includes(operation)) {
+                        access_token.set('');
+                        username.set('');
+                        is_login.set(false);
+                        alert("로그인이 필요합니다.");
+                        push('/user-login');
+                    } else {
                         if (failure_callback) {
-                            failure_callback(json)
-                        }else {
-                            alert(JSON.stringify(json))
+                            failure_callback(json);
+                        } else {
+                            alert(JSON.stringify(json));
                         }
                     }
-                })
-                .catch(error => {
-                    alert(JSON.stringify(error))
-                })
-        })
+                } else {
+                    if (failure_callback) {
+                        failure_callback(json);
+                    } else {
+                        alert(JSON.stringify(json));
+                    }
+                }
+            })
+            .catch(error => {
+                alert(JSON.stringify(error));
+            });
+    });
+
 }
 
 export default fastapi

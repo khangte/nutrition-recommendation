@@ -123,5 +123,6 @@
         </div>
 
         <button type="submit" class="btn btn-primary" on:click="{post_user}">생성하기</button>
+        
     </form>
 </div>

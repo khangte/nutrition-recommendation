@@ -1,13 +1,12 @@
+from pydantic import EmailStr
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 
-from domain.user import user_schema
-from domain.user.user_schema import UserCreate
 from models import User
 from datetime import datetime
+from domain.user.user_schema import UserCreate, UserUpdate
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
 
 def create_user(db: Session, user_create: UserCreate):
     db_user = User(name=user_create.name,
@@ -46,13 +45,20 @@ def update_login_info(db: Session, user: User):
     user.login_count = (user.login_count or 0) + 1
     db.commit()
 
-def update_user_info(db: Session, user: User,
-                     update_data: user_schema.UserUpdate):
-    user.name = update_data.name
-    user.email = update_data.email
-    user.phone_number = update_data.phone_number
-    user.birthdate = update_data.birthdate
-    user.gender = update_data.gender
-    user.telecom = update_data.telecom
+def update_user_info(db: Session, user: User, data: UserUpdate):
+    if data.name is not None:
+        user.name = data.name
+    if data.username is not None:
+        user.username = data.username
+    if data.email is not None:
+        user.email = data.email
+    if data.telecom is not None:
+        user.telecom = data.telecom
+    if data.phone_number is not None:
+        user.phone_number = data.phone_number
+    db.commit()
+
+def update_password(db: Session, user: User, new_password: str):
+    user.password = pwd_context.hash(new_password)
     db.commit()
 

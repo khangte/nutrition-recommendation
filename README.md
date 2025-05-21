@@ -99,11 +99,11 @@ login-test/
 
 ---
 > ## 실행코드
-> - 백엔드 실행코드
+> - FastAPI 실행 코드
 > ```bash
 > uvicorn main:app --host 0.0.0.0 --port 8000
 > ```
-> - 프론트엔드 실행코드
+> - Svelte 실행코드
 > ```bash
 > npm run dev
 > ```
