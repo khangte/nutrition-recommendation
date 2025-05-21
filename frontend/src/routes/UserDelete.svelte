@@ -26,7 +26,7 @@
     })
 
     if (!verifyRes.ok) {
-      result = "❌ 비밀번호가 일치하지 않습니다."
+      result = "비밀번호가 일치하지 않습니다."
       return
     }
 
@@ -49,7 +49,7 @@
       push('/user-login')
     } else {
       const err = await res.json()
-      result = `❌ 탈퇴 실패: ${err.detail || "오류 발생"}`
+      result = `탈퇴 실패: ${err.detail || "오류 발생"}`
     }
   }
 </script>

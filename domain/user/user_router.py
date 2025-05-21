@@ -24,14 +24,14 @@ router = APIRouter(
 
 
 @router.post("/create", status_code=status.HTTP_204_NO_CONTENT)
-def user_create(
-        _user_create: user_schema.UserCreate,
-        db: Session = Depends(get_db)
-):
-    user = user_crud.get_existing_user(db, user_create=_user_create)
-    if user:
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT,
-                            detail="이미 존재하는 사용자입니다.")
+def user_create(_user_create: user_schema.UserCreate, db: Session = Depends(get_db)):
+    if user_crud.is_username_exists(db, _user_create.username):
+        raise HTTPException(status_code=409, detail="이미 사용 중인 아이디입니다.")
+    if user_crud.is_email_exists(db, _user_create.email):
+        raise HTTPException(status_code=409, detail="이미 등록된 이메일입니다.")
+    if user_crud.is_phone_exists(db, _user_create.phone_number):
+        raise HTTPException(status_code=409, detail="이미 등록된 전화번호입니다.")
+
     user_crud.create_user(db=db, user_create=_user_create)
 
 
@@ -56,7 +56,10 @@ def login_for_access_token(
             headers={"WWW-Authenticate": "Bearer"},
         )
 
-    # make access token
+    # 로그인 정보 갱신
+    user_crud.update_login_info(db, user)
+
+    # 엑세스 토큰 생성
     data = {
         "sub": user.username,
         "exp": datetime.now(UTC) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
@@ -109,3 +112,17 @@ def delete_current_user(
     current_user: user_schema.User = Depends(get_current_user)
 ):
     user_crud.delete_user(db, current_user.username)
+
+@router.get("/me", response_model=user_schema.User)
+def get_current_user_info(current_user: user_schema.User = Depends(get_current_user)):
+    return current_user
+
+
+@router.put("/update", status_code=204)
+def update_my_info(
+        update_data: user_schema.UserUpdate,
+        db: Session = Depends(get_db),
+        current_user: user_schema.User = Depends(get_current_user)
+):
+    user_crud.update_user_info(db, current_user, update_data)
+

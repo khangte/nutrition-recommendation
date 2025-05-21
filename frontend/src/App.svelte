@@ -5,12 +5,16 @@
   import UserLogin from "./routes/UserLogin.svelte"
   import Navigation from "./components/Navigation.svelte"
   import UserDelete from "./routes/UserDelete.svelte"
+  import UserProfile from "./routes/UserProfile.svelte"
+  import UserUpdate from "./routes/UserUpdate.svelte"
 
   const routes = {
     '/': Home,
     '/user-create': UserCreate,
     '/user-login': UserLogin,
     '/user-delete': UserDelete,
+    '/user-profile': UserProfile,
+    '/user-update': UserUpdate,
   }
 </script>
 
