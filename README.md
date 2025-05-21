@@ -1,5 +1,4 @@
-# 점프 투 FastAPI
-[[위키독스 **점프 투 FastAPI**]](https://www.google.com/search?q=%EC%A0%90%ED%94%84%ED%88%AC+fastapi&rlz=1C1GCEU_koKR1161KR1161&oq=%EC%A0%90%ED%94%84%ED%88%AC&gs_lcrp=EgZjaHJvbWUqBggBEEUYOzIGCAAQRRg5MgYIARBFGDsyBggCEEUYOzIGCAMQRRg7MgYIBBBFGDvSAQkzMDA1ajBqMTWoAgiwAgE&sourceid=chrome&ie=UTF-8)
+# FastAPI 회원가입 구현
 
 > ## 개발환경 구성 
 > ### 시스템 환경
@@ -29,7 +28,7 @@
 
 ## 파일 구조
 ```
-myapi/
+login-test/
 ├── domain/
 │   └── user/
 │       ├── user_crud.py
