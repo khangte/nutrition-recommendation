@@ -1,5 +1,17 @@
 # FastAPI 회원가입 구현
 
+> ## 실행코드
+> - FastAPI 실행 코드
+> ```bash
+> uvicorn main:app --host 0.0.0.0 --port 8000
+> ```
+> - Svelte 실행코드
+> ```bash
+> npm run dev
+> ```
+
+---
+
 > ## 개발환경 구성 
 > ### 시스템 환경
 > - 가상화 플랫폼: VirtualBox + Ubuntu 22.04 Server
@@ -43,10 +55,16 @@ login-test/
 │   │   │   ├── api.js
 │   │   │   └── store.js
 │   │   ├── routes/
+│   │   │   ├── auth
+│   │   │   │   └── VerifyPassword.svelte
+│   │   │   ├── user_update
+│   │   │   │   ├── UpdatePassword.svelte
+│   │   │   │   └── UpdateUser.svelte
 │   │   │   ├── Home.svelte
 │   │   │   ├── UserCreate.svelte
 │   │   │   ├── UserDelete.svelte
-│   │   │   └── UserLogin.svelte
+│   │   │   ├── UserLogin.svelte
+│   │   │   └── UserProfile.svelte
 │   │   ├── app.css
 │   │   ├── App.svelte
 │   │   ├── main.js
@@ -95,17 +113,6 @@ login-test/
 >   "checkJs": false
 >   (...생락...)
 > }
-> ```
-
----
-> ## 실행코드
-> - FastAPI 실행 코드
-> ```bash
-> uvicorn main:app --host 0.0.0.0 --port 8000
-> ```
-> - Svelte 실행코드
-> ```bash
-> npm run dev
 > ```
 
 ---
