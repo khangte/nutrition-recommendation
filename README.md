@@ -1,6 +1,5 @@
 # FastAPI 회원가입 구현
 
-
 > ## 실행코드
 > ### 개발중
 > 1.백엔드 실행 (FastAPI)
@@ -232,7 +231,9 @@ login-test/
 - MySQL은 서버 기반 DB이기 때문에, DB가 서버 내에 직접 있어야함.
 - 즉, 미리 CREATE DATABASE를 해서 DB를 생성해야됨.
 ```sql
-CREATE DATABASE login_test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE login_test 
+CHARACTER SET utf8mb4 
+COLLATE utf8mb4_unicode_ci;
 ```
 
 ---
