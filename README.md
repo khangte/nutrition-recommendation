@@ -1,14 +1,18 @@
 # FastAPI 회원가입 구현
 
+
 > ## 실행코드
-> - FastAPI 실행 코드
+> ### 개발중
+> 1.백엔드 실행 (FastAPI)
 > ```bash
-> uvicorn main:app --host 0.0.0.0 --port 8000
+> $ uvicorn main:app --host 0.0.0.0 --port 8000
 > ```
-> - Svelte 실행코드
+> 2.프론트엔드 실행 (Svelte + Vite 개발 서버)
 > ```bash
-> npm run dev
+> $ cd frontend
+> $ npm run dev
 > ```
+> 3. 개발 서버 접속 URL: **localhost:5173**
 
 ---
 
@@ -255,15 +259,3 @@ CREATE DATABASE login_test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 > ```
 
 ---
-
-> ## 기능 구현 절차
-> - 백엔드: 데이터 처리 흐름
->   1. 스키마 생성
->   2. CRUD 함수 작성
->   3. 라우터 작성 및 등록
-> - 프론트엔드: 화면 구성 흐름
->   1. Svelte 컴포넌트 작성
->   2. 라우터에 컴포넌트 등록
-
----
-
