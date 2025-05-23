@@ -95,7 +95,7 @@ login-test/
 > ## uv 가상환경
 > - 가상환경 생성
 > ```
-> $ uv venv
+> $ uv venv --python 3.11
 > ```
 > - 가상환경 활성화
 > ```bash
