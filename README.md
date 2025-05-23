@@ -45,6 +45,8 @@
 ```
 login-test/
 ├── domain/
+│   ├── common/
+│   │   └── enums.py
 │   └── user/
 │       ├── user_crud.py
 │       ├── user_router.py
