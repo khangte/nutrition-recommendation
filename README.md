@@ -1,20 +1,5 @@
 # FastAPI 회원가입 구현
 
-> ## 실행코드
-> ### 개발중
-> 1.백엔드 실행 (FastAPI)
-> ```bash
-> $ uvicorn main:app --host 0.0.0.0 --port 8000
-> ```
-> 2.프론트엔드 실행 (Svelte + Vite 개발 서버)
-> ```bash
-> $ cd frontend
-> $ npm run dev
-> ```
-> 3. 개발 서버 접속 URL: **localhost:5173**
-
----
-
 > ## 개발환경 구성 
 > ### 시스템 환경
 > - 가상화 플랫폼: VirtualBox + Ubuntu 22.04 Server
@@ -119,6 +104,21 @@ login-test/
 >   (...생락...)
 > }
 > ```
+
+---
+
+> ## 실행코드
+> ### 개발중
+> 1.백엔드 실행 (FastAPI)
+> ```bash
+> $ uvicorn main:app --host 0.0.0.0 --port 8000
+> ```
+> 2.프론트엔드 실행 (Svelte + Vite 개발 서버)
+> ```bash
+> $ cd frontend
+> $ npm run dev
+> ```
+> 3. 개발 서버 접속 URL: **localhost:5173**
 
 ---
 
