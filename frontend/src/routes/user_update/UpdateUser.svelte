@@ -4,6 +4,7 @@
     import fastapi from '../../lib/api'
     import { username } from '../../lib/store'
 
+    let updated_username = $username
     let name = ''
     let email = ''
     let telecom = ''
@@ -13,6 +14,7 @@
 
     // 정보 불러오기
     fastapi('get', '/api/user/me', {}, (json) => {
+        updated_username = json.username
         name = json.name
         email = json.email
         telecom = json.telecom
@@ -21,14 +23,16 @@
 
     function updateUser() {
         const params = {
-        name,
-        email,
-        telecom,
-        phone_number,
+            username: updated_username,
+            name,
+            email,
+            telecom,
+            phone_number,
         }
 
         fastapi('put', '/api/user/user-update', params,
         () => {
+            $username = updated_username // store 갱신
             message = "정보가 수정되었습니다"
             setTimeout(() => push('/user-profile'), 1500)
         },
@@ -44,7 +48,7 @@
 
     <div class="mb-3">
         <label for="username">아이디</label>
-        <input id="username" type="text" class="form-control" bind:value={$username} />
+        <input id="username" type="text" class="form-control" bind:value={updated_username} />
     </div>
 
     <div class="mb-3">

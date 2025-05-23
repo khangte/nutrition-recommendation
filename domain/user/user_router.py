@@ -1,10 +1,11 @@
 from datetime import timedelta, datetime, UTC
-
+import os
 from fastapi import APIRouter, HTTPException, Depends
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from jose import jwt, JWTError
 from sqlalchemy.orm import Session
 from starlette import status
+from dotenv import load_dotenv
 
 from models import User as ModelUser
 from database import get_db
@@ -14,10 +15,12 @@ from domain.user.user_schema import PasswordVerify
 from domain.user.user_schema import UserUpdate
 from domain.user.user_schema import PasswordUpdate
 
-ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24
-# $ openssl rand -hex 32
-SECRET_KEY = "d636517809afb1541819a0414b13574f329b4266a49b35246478f4017269fbf8"
-ALGORITHM = "HS256"
+load_dotenv()
+
+ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", 60 * 24))
+SECRET_KEY = os.getenv("SECRET_KEY")
+ALGORITHM = os.getenv("ALGORITHM", "HS256")
+
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/user/login")
 
 router = APIRouter(
@@ -44,28 +47,24 @@ def login_for_access_token(
         form_data: OAuth2PasswordRequestForm = Depends(),
         db: Session = Depends(get_db)
 ):
-    # 아이디 확인
-    user = user_crud.get_user(db, form_data.username)
+    user = user_crud.get_user_by_username(db, form_data.username)
     if not user:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="가입되지 않은 아이디입니다."
         )
 
-    # 비밀번호 확인
-    if not user or not pwd_context.verify( form_data.password, user.password ):
+    if not pwd_context.verify(form_data.password, user.password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="비밀번호가 일치하지 않습니다.",
             headers={"WWW-Authenticate": "Bearer"},
         )
 
-    # 로그인 정보 갱신
     user_crud.update_login_info(db, user)
 
-    # 엑세스 토큰 생성
     data = {
-        "sub": user.username,
+        "sub": str(user.id),
         "exp": datetime.now(UTC) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     }
     access_token = jwt.encode(data, SECRET_KEY, algorithm=ALGORITHM)
@@ -87,16 +86,16 @@ def get_current_user(
     )
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        username: str = payload.get("sub")
-        if username is None:
+        user_id: int = int(payload.get("sub"))
+        if user_id is None:
             raise credentials_exception
     except JWTError:
         raise credentials_exception
-    else:
-        user = user_crud.get_user(db, username=username)
-        if user is None:
-            raise credentials_exception
-        return user
+
+    user = user_crud.get_user_by_id(db, user_id=user_id)
+    if user is None:
+        raise credentials_exception
+    return user
 
 @router.post("/verify-password", status_code=204)
 def verify_password(
@@ -104,9 +103,9 @@ def verify_password(
         db: Session = Depends(get_db),
         current_user: ModelUser = Depends(get_current_user)
 ):
-    if not user_crud.verify_user_password(db, current_user.username, data.password):
+    if not user_crud.verify_user_password(db, current_user.id, data.password):
         raise HTTPException(
-            status_code=400, # 401은 api.js에서 처리
+            status_code=400,
             detail="비밀번호가 일치하지 않습니다."
         )
 
@@ -115,7 +114,7 @@ def delete_current_user(
         db: Session = Depends(get_db),
         current_user: ModelUser = Depends(get_current_user)
 ):
-    user_crud.delete_user(db, current_user.username)
+    user_crud.delete_user(db, current_user.id)
 
 @router.get("/me", response_model=user_schema.User)
 def get_current_user_info(current_user: ModelUser = Depends(get_current_user)):
@@ -136,4 +135,3 @@ def update_password(
         current_user: ModelUser = Depends(get_current_user)
 ):
     user_crud.update_password(db, current_user, data.password)
-

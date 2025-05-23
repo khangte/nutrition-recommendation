@@ -8,8 +8,8 @@ from domain.common.enums import Gender, Telecom
 class UserCreate(BaseModel):
     name: constr(strip_whitespace=True, min_length=1)
     username: constr(strip_whitespace=True, min_length=4, max_length=20, pattern=r'^[a-zA-Z0-9]+$')
-    password1: constr(strip_whitespace=True, min_length=6, max_length=20)
-    password2: constr(strip_whitespace=True, min_length=6, max_length=20)
+    password1: constr(strip_whitespace=True, min_length=4, max_length=20)
+    password2: constr(strip_whitespace=True, min_length=4, max_length=20)
     email: EmailStr
     telecom: Telecom
     phone_number: constr(strip_whitespace=True, pattern=r'^010-\d{4}-\d{4}$')
