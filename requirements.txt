@@ -24,9 +24,11 @@ fastapi
 uvicorn
 sqlalchemy
 pydantic
-passlib[bcrypt]
+passlib[bcrypt] # passlib 패키지 bcrypt 암화화 라이브러리
 python-jose
 pydantic[email]
 python-multipart
 pytz
 cryptography
+
+pymysql

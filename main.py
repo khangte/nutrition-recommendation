@@ -17,7 +17,7 @@ from domain.user import user_router
 app = FastAPI()
 
 origins = [
-    "http://localhost:5173"
+    "http://localhost:5173", # 개발 서버
 ]
 
 # CORS 설정

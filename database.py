@@ -1,5 +1,8 @@
 # database.py
 # 데이터베이스와 관련된 설정을 하는 파일
+######################################
+# mysql -h 172.26.128.1 -P 3306 -u root -p
+######################################
 
 from sqlalchemy import create_engine, MetaData
 from sqlalchemy.ext.declarative import declarative_base
