@@ -157,8 +157,8 @@ login-test/
 > ---
 >
 > ✅ **2. MySQL 컨테이너 실행** (Windows Docker Desktop 기준)
->
 > ```bash
+> - 컨테이너 처음 생성 시
 > docker run -d ^
 >   --name my-mysql ^
 >   -e MYSQL_ROOT_PASSWORD=1234 ^
@@ -167,6 +167,9 @@ login-test/
 >   -v mysql-volume:/var/lib/mysql ^
 >   --restart unless-stopped ^
 >   mysql:8.0
+> 
+> - 기존 컨테이너 실행 시
+> docker start my-mysql
 > ```
 >
 > 🔸 `--restart unless-stopped`: Windows 재시작 후 Docker Desktop이 다시 실행되면 컨테이너도 자동 실행됨  
@@ -176,7 +179,6 @@ login-test/
 > ---
 >
 > ✅ **3. MySQL 컨테이너 상태 확인**
->
 > ```bash
 > docker ps
 > ```
@@ -184,7 +186,6 @@ login-test/
 > ---
 > 
 > ✅ **4. PowerShell에서 현재 IP 확인 (ifconfig는 Linux 명령어입니다)**
->
 > ```powershell
 > ipconfig
 > ```
@@ -200,7 +201,6 @@ login-test/
 > ---
 >
 > ✅ **5. Ubuntu (WSL or VirtualBox)에서 MySQL 접속**
->
 > ```bash
 > 예시: 
 > mysql -h 192.168.0.101 -P 3306 -u root -p
@@ -213,7 +213,6 @@ login-test/
 > ---
 > 
 > ✅ **6. FastAPI의 `SQLALCHEMY_DATABASE_URL` 설정**
->
 > ```python
 > 예시:
 > SQLALCHEMY_DATABASE_URL = "mysql+pymysql://root:1234@192.168.0.101:3306/testdb"
